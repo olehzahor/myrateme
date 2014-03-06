@@ -1,0 +1,94 @@
+{% load staticfiles %}
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <title>Jumbotron</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="{% static "js/jquery.raty.js" %}">
+
+      </script>
+      <script type="text/javascript">$.fn.raty.defaults.path='{% static "img/" %}';</script>
+    <style type="text/css">
+      body {
+        padding-top: 50px;
+        padding-bottom: 20px;
+      }
+    </style>
+  </head>
+
+<body>
+{% block navbar %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Project name</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="#">Home</a>
+            </li>
+            <li>
+              <a href="#about">About</a>
+            </li>
+            <li>
+              <a href="#contact">Contact</a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="#">Action</a>
+                </li>
+                <li>
+                  <a href="#">Another action</a>
+                </li>
+                <li>
+                  <a href="#">Something else here</a>
+                </li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li>
+                  <a href="#">Separated link</a>
+                </li>
+                <li>
+                  <a href="#">One more separated link</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+          {% if not hide_form %}
+          <form class="navbar-form navbar-right" action="/login_form/" method="POST">
+          {% csrf_token %}
+            <div class="form-group">
+              <input type="text" placeholder="Email" id="username" name="username" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" id="password" name="password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+          </form>
+
+        {% else %}
+        <a href="/logout?next=/" class="navbar-text pull-right">Logout</a>
+        {% endif %}
+        </div>
+
+        <!--/.navbar-collapse -->
+      </div>
+    </div>
+{% endblock %}
+{% block content %}
+{% endblock %}
+</body>
+</html>

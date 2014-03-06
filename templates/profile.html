@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+
+
+<div class="container">
+      <div class="row">
+        <div class="col-md-2">
+         <h3>{{ user.get_full_name }}</h3>
+			<img alt="140x140" src="http://lorempixel.com/140/140/">
+        </div>
+        <div class="col-md-2">
+          <h1  class="text-center">{{ overall_rating }}</h1>
+          <p class="text-center">Всего оценок: {{ count }} </p>
+        </div>
+        <div class="col-md-8">
+            {% for criterion in criterial_rating %}
+			<h3> {{ criterion.cat_title }} <span class="star {{ criterion.id }}"></span> ({{ criterion.count }}) </h3>
+			{% endfor %}
+        </div>
+      </div>
+    </div>
+
+	<div class="row-fluid">
+		<div class="span12">
+            <h3>
+				Comments:
+			</h3>
+
+            {% for group in received_marks_grouped reversed %}
+            <h5>
+				{{ group.0.get_datetime_distance }} от {{ group.0.from_user }}
+			</h5>
+                {% for mark in group %}
+                    <h6>{{ mark.get_criterion_display }}: {{ mark.value }}</h6>
+                    <p>{{ mark.comment }}</p>
+                {% endfor %}
+            {% endfor %}
+		</div>
+	</div>
+</div>
+
+    <script type="application/javascript">
+        var getCriterionById = function(id)
+        {
+            var int_id = parseInt(id);
+            for (var i=0; i<cvalues.length; ++i)
+            {
+                if (cvalues[i].id == int_id) return cvalues[i];
+            }
+        }
+        var getValue = function(object, param) {return getCriterionById(object.classList[1])[param]}
+        var cvalues = {{ criterial_rating_json|safe }};
+        var params = {
+            score: function() {return getValue(this, 'overall')},
+            number:10,
+            size:24,
+            readOnly: function() {return !getValue(this, 'new_allowed')},
+            click: function(){
+                $.ajax({
+                    url: "/rate/",
+                    data: {
+                           to:{{ user.id }},
+                           criterion_id: getValue(this, 'id'),
+                           value:$(this).find("input").val()
+                    }
+                })
+            }
+        };
+        $('.star').raty(params);
+    </script>
+{% endblock %}
